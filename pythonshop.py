@@ -166,8 +166,6 @@ class Pythonshop(QMainWindow):
 
     # Слайдер для затемнения изображения
     def valueChangeBrightness(self):
-        print(self.negativ, self.black, self.blur, self.bright, self.details, self.copiesDetail, self.copies,
-              self.copiesBlur)
         if self.name:
             if self.bright:
                 self.copies = []
