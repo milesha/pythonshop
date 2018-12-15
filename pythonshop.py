@@ -105,7 +105,7 @@ class Pythonshop(QMainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         self.name, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                   "All Files (*);;Python Files (*.py)", options=options)
+                                                   "(*.jpg *.png)", options=options)
         if self.name:
             self.nameCopy = self.name
             image = Image.open(self.name)
@@ -120,15 +120,16 @@ class Pythonshop(QMainWindow):
     # Обработка закрытия программы
     def closeEvent(self, event):
         close = QMessageBox()
-        close.setText("Сохранить действия в файле?")
-        close.setWindowIcon(QIcon('icon.png'))
-        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
-        close = close.exec()
+        if not self.f:
+            event.accept()
+        else:
+            close.setText("Сохранить действия в файле?")
+            close.setWindowIcon(QIcon('icon.png'))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
 
         if close == QMessageBox.Yes:
-            if not self.f:
-                event.accept()
-            elif self.name:
+            if self.name:
                 im = Image.open(self.name)
                 im.save(self.nameCopy)
                 os.remove(self.name)
@@ -166,8 +167,6 @@ class Pythonshop(QMainWindow):
 
     # Слайдер для затемнения изображения
     def valueChangeBrightness(self):
-        print(self.negativ, self.black, self.blur, self.bright, self.details, self.copiesDetail, self.copies,
-              self.copiesBlur)
         if self.name:
             if self.bright:
                 self.copies = []
@@ -318,6 +317,9 @@ class Pythonshop(QMainWindow):
     # Поворот налево
     def rotateL(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_90)
             im.save(self.name)
@@ -328,6 +330,9 @@ class Pythonshop(QMainWindow):
     # Поворот направо
     def rotateR(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_270)
             im.save(self.name)
@@ -338,6 +343,9 @@ class Pythonshop(QMainWindow):
     # Отображение по вертикали
     def transferfLeftRight(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_LEFT_RIGHT)
             im.save(self.name)
@@ -348,6 +356,9 @@ class Pythonshop(QMainWindow):
     # Отображение по горизонтали
     def transferfUpDown(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_TOP_BOTTOM)
             im.save(self.name)
@@ -369,3 +380,4 @@ if __name__ == '__main__':
     ex = Pythonshop()
     ex.show()
     sys.exit(app.exec())
+
