@@ -105,7 +105,7 @@ class Pythonshop(QMainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         self.name, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
-                                                   "All Files (*);;Python Files (*.py)", options=options)
+                                                   "(*.jpg *.png)", options=options)
         if self.name:
             self.nameCopy = self.name
             image = Image.open(self.name)
@@ -120,15 +120,16 @@ class Pythonshop(QMainWindow):
     # Обработка закрытия программы
     def closeEvent(self, event):
         close = QMessageBox()
-        close.setText("Сохранить действия в файле?")
-        close.setWindowIcon(QIcon('icon.png'))
-        close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
-        close = close.exec()
+        if not self.f:
+            event.accept()
+        else:
+            close.setText("Сохранить действия в файле?")
+            close.setWindowIcon(QIcon('icon.png'))
+            close.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+            close = close.exec()
 
         if close == QMessageBox.Yes:
-            if not self.f:
-                event.accept()
-            elif self.name:
+            if self.name:
                 im = Image.open(self.name)
                 im.save(self.nameCopy)
                 os.remove(self.name)
