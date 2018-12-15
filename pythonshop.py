@@ -316,6 +316,9 @@ class Pythonshop(QMainWindow):
     # Поворот налево
     def rotateL(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_90)
             im.save(self.name)
@@ -326,6 +329,9 @@ class Pythonshop(QMainWindow):
     # Поворот направо
     def rotateR(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_270)
             im.save(self.name)
@@ -336,6 +342,9 @@ class Pythonshop(QMainWindow):
     # Отображение по вертикали
     def transferfLeftRight(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_LEFT_RIGHT)
             im.save(self.name)
@@ -346,6 +355,9 @@ class Pythonshop(QMainWindow):
     # Отображение по горизонтали
     def transferfUpDown(self):
         if self.name:
+            self.blur = True
+            self.bright = True
+            self.details = True
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_TOP_BOTTOM)
             im.save(self.name)
