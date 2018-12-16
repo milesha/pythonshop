@@ -21,8 +21,9 @@ class Pythonshop(QMainWindow):
         self.setWindowIcon(QIcon('icon.png'))
         self.name = None
 
-        # Флаг для корректного сохранения
+        # Флаг для корректного сохранения и закрытия программы
         self.f = True
+        self.f1 = True
 
         # Флаги для фильтров
         self.negativ = True
@@ -32,6 +33,7 @@ class Pythonshop(QMainWindow):
         self.blur = True
         self.bright = True
         self.details = True
+        
         self.copiesDetail = []
         self.copies = []
         self.copiesBlur = []
@@ -61,6 +63,7 @@ class Pythonshop(QMainWindow):
         self.rotateRight.setStyleSheet(
             "background-color: {}".format('#CC0605'))
 
+        # Обработка нажатия на кнопки
         self.beginButton.clicked.connect(self.openFileNameDialog)
         self.saveButton.clicked.connect(self.savePic)
 
@@ -111,6 +114,7 @@ class Pythonshop(QMainWindow):
             image = Image.open(self.name)
             self.original = image.copy()
             image.save(self.nameCopy)
+            # Создание копии файла для работы
             self.name = self.name[:self.name.index('.')] + '_copy' + self.name[self.name.index('.'):]
             image.save(self.name)
             pixmap = QPixmap(self.name)
@@ -120,7 +124,10 @@ class Pythonshop(QMainWindow):
     # Обработка закрытия программы
     def closeEvent(self, event):
         close = QMessageBox()
-        if not self.f:
+
+        if self.f1:
+            event.accept()
+        elif not self.f:
             event.accept()
         else:
             close.setText("Сохранить действия в файле?")
@@ -168,6 +175,7 @@ class Pythonshop(QMainWindow):
     # Слайдер для затемнения изображения
     def valueChangeBrightness(self):
         if self.name:
+            self.f1 = False
             if self.bright:
                 self.copies = []
                 image = np.asarray(Image.open(self.name))
@@ -186,6 +194,7 @@ class Pythonshop(QMainWindow):
 
     # Слайдер для затемнения изображения
     def valueChangeBlur(self):
+        self.f1 = False
         if self.name:
             if self.blur:
                 self.copiesBlur = []
@@ -207,6 +216,7 @@ class Pythonshop(QMainWindow):
 
     # Слайдер для увеличения резкости
     def valueChangeDetails(self):
+        self.f1 = False
         if self.name:
             if self.details:
                 image = np.asarray(Image.open(self.name))
@@ -234,6 +244,7 @@ class Pythonshop(QMainWindow):
 
     # Черно-белый фильтр
     def blackFiltr(self):
+        self.f1 = False
         if self.name and self.black:
             # Установка начальных значений для слайдеров
             self.blur = True
@@ -258,6 +269,7 @@ class Pythonshop(QMainWindow):
 
     # Ретро фильтр
     def retroFiltr(self):
+        self.f1 = False
         if self.name:
             image = Image.open(self.name)
             draw = ImageDraw.Draw(image)
@@ -265,6 +277,7 @@ class Pythonshop(QMainWindow):
             height = image.size[1]
             pix = image.load()
             k = 30
+            
             for i in range(width):
                 for j in range(height):
                     a = pix[i, j][0]
@@ -298,7 +311,9 @@ class Pythonshop(QMainWindow):
 
     # Фильтр Негатив
     def negativFiltr(self):
+        self.f1 = False
         if self.name and self.negativ:
+            
             # Установка начальных значений для слайдеров
             self.blur = True
             self.bright = True
@@ -316,10 +331,14 @@ class Pythonshop(QMainWindow):
 
     # Поворот налево
     def rotateL(self):
+        self.f1 = False
         if self.name:
+            
+            # Установка начальных значений для слайдеров
             self.blur = True
             self.bright = True
             self.details = True
+            
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_90)
             im.save(self.name)
@@ -329,10 +348,14 @@ class Pythonshop(QMainWindow):
 
     # Поворот направо
     def rotateR(self):
+        self.f1 = False
         if self.name:
+            
+            # Установка начальных значений для слайдеров
             self.blur = True
             self.bright = True
             self.details = True
+            
             im = Image.open(self.name)
             im = im.transpose(Image.ROTATE_270)
             im.save(self.name)
@@ -342,10 +365,14 @@ class Pythonshop(QMainWindow):
 
     # Отображение по вертикали
     def transferfLeftRight(self):
+        self.f1 = False
         if self.name:
+            
+            # Установка начальных значений для слайдеров
             self.blur = True
             self.bright = True
             self.details = True
+            
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_LEFT_RIGHT)
             im.save(self.name)
@@ -355,10 +382,14 @@ class Pythonshop(QMainWindow):
 
     # Отображение по горизонтали
     def transferfUpDown(self):
+        self.f1 = False
         if self.name:
+            
+            # Установка начальных значений для слайдеров
             self.blur = True
             self.bright = True
             self.details = True
+            
             im = Image.open(self.name)
             im = im.transpose(Image.FLIP_TOP_BOTTOM)
             im.save(self.name)
@@ -380,4 +411,3 @@ if __name__ == '__main__':
     ex = Pythonshop()
     ex.show()
     sys.exit(app.exec())
-
