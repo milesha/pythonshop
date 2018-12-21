@@ -41,10 +41,7 @@ class Pythonshop(QMainWindow):
         # Обработка закрытия программы
         quit = QAction("Quit", self)
         quit.triggered.connect(self.closeEvent)
-        menubar = self.menuBar()
-        fmenu = menubar.addMenu("File")
-        fmenu.addAction(quit)
-
+        
         # Устанавливаем цвета кнопок
         self.beginButton.setStyleSheet(
             "background-color: {}".format('#FFCC00'))
